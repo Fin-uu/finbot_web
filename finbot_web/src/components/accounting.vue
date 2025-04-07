@@ -32,9 +32,11 @@
           </div>
         </div>
       </div>
-      <button class="btn btn-primary" @click="addExpense">
-        <i class="icon">+</i> 新增支出
-      </button>
+      <div class="card-actions">
+        <button class="btn btn-primary" @click="addExpense">
+          <i class="icon">+</i> 新增支出
+        </button>
+      </div>
     </div>
     
     <div class="card expense-records" v-if="expenses.length > 0">
@@ -59,6 +61,11 @@
           </tbody>
         </table>
       </div>
+      <div class="card-actions">
+        <button class="btn btn-danger" @click="clearExpense">
+          <i class="icon">×</i> 清空紀錄
+        </button>
+      </div>
     </div>
     
     <div class="card settlement" v-if="hasSettlements">
@@ -80,10 +87,18 @@
       </div>
     </div>
     
-    <div class="actions" v-if="expenses.length > 0">
-      <button class="btn btn-danger" @click="clearExpense">
-        <i class="icon">×</i> 清空紀錄
-      </button>
+    <div class="card payment-instructions" v-if="hasSettlements">
+      <h2 class="card-title">付款指示</h2>
+      <div class="payment-list">
+        <div v-for="(payment, index) in paymentInstructions" :key="index" class="payment-item">
+          <div class="payment-arrow">
+            <span class="from">{{ payment.from }}</span>
+            <span class="arrow">→</span>
+            <span class="to">{{ payment.to }}</span>
+          </div>
+          <div class="payment-amount">{{ payment.amount.toFixed(1) }}</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -166,6 +181,59 @@ const settlements = computed(() => {
   return result
 })
 
+// 計算誰付給誰
+const paymentInstructions = computed(() => {
+  const instructions = [];
+  const settlementsValue = settlements.value;
+  
+  // 複製結算資料
+  const balance = {};
+  for (const person in settlementsValue) {
+    if (Math.abs(settlementsValue[person]) > 0.1) { // 忽略極小的金額差異
+      balance[person] = settlementsValue[person];
+    }
+  }
+  
+  // 找出債務人和債權人
+  const debtors = Object.keys(balance).filter(person => balance[person] < 0)
+    .sort((a, b) => balance[a] - balance[b]); // 由小到大排序（最大負債在前）
+    
+  const creditors = Object.keys(balance).filter(person => balance[person] > 0)
+    .sort((a, b) => balance[b] - balance[a]); // 由大到小排序（最大債權在前）
+  
+  // 計算債務人付款給債權人
+  let i = 0, j = 0;
+  while (i < debtors.length && j < creditors.length) {
+    const debtor = debtors[i];
+    const creditor = creditors[j];
+    
+    // 債務金額（正數）和債權金額
+    const debt = Math.abs(balance[debtor]);
+    const credit = balance[creditor];
+    
+    // 計算轉帳金額
+    const amount = Math.min(debt, credit);
+    
+    if (amount > 0.1) { // 忽略極小的金額
+      instructions.push({
+        from: debtor,
+        to: creditor,
+        amount: amount
+      });
+    }
+    
+    // 更新餘額
+    balance[debtor] += amount;
+    balance[creditor] -= amount;
+    
+    // 如果債務或債權已清償，移至下一位
+    if (Math.abs(balance[debtor]) < 0.1) i++;
+    if (Math.abs(balance[creditor]) < 0.1) j++;
+  }
+  
+  return instructions;
+});
+
 // 檢查是否有結算資料
 const hasSettlements = computed(() => {
   return Object.keys(settlements.value).length > 0
@@ -235,6 +303,7 @@ onMounted(() => {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 40px;
   margin-bottom: 25px;
+  width: 100%;
 }
 
 .card-title {
@@ -282,12 +351,18 @@ input:focus, select:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 200px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .btn-primary {
   background-color: #3498db;
   color: white;
-  width: 100%;
 }
 
 .btn-primary:hover {
@@ -377,11 +452,6 @@ input:focus, select:focus {
   margin-bottom: 2px;
 }
 
-.actions {
-  display: flex;
-  justify-content: center;
-}
-
 .participant-checkboxes {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -397,6 +467,55 @@ input:focus, select:focus {
 
 .checkbox-item:hover {
   background-color: #e9ecef;
+}
+
+/* 新增的付款指示樣式 */
+.payment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  border-left: 4px solid #3498db;
+  transition: background-color 0.2s;
+}
+
+.payment-item:hover {
+  background-color: #e9ecef;
+}
+
+.payment-arrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payment-arrow .from {
+  font-weight: bold;
+  color: #e74c3c;
+}
+
+.payment-arrow .to {
+  font-weight: bold;
+  color: #2ecc71;
+}
+
+.payment-arrow .arrow {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+}
+
+.payment-amount {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #3498db;
 }
 
 @media (max-width: 600px) {
@@ -438,6 +557,22 @@ input:focus, select:focus {
   
   .participant-checkboxes {
     grid-template-columns: 1fr;
+  }
+  
+  .payment-arrow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  
+  .payment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .payment-amount {
+    align-self: flex-end;
   }
 }
 </style>

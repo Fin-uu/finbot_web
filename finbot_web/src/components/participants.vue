@@ -95,6 +95,7 @@ onMounted(() => {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 40px;
   margin-bottom: 25px;
+  width: 100%;
 }
 
 .card-title {
@@ -147,6 +148,7 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 200px;
 }
 
 .btn-primary {

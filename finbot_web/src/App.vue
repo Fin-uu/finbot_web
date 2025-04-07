@@ -6,7 +6,7 @@ import HelloWorld from './components/HelloWorld.vue'
   <div>
     
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld  />
   <router-view></router-view>
 
 </template>
