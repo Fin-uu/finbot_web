@@ -15,6 +15,11 @@
             <i class="icon">📝</i> 記帳
           </router-link>
         </div>
+        <div class="card-actions">
+          <router-link to="/" class="btn btn-primary">
+            <i class="icon">📝</i> 紀錄觀看
+          </router-link>
+        </div>
       </div>
     </div>
   </div>

@@ -1,33 +1,36 @@
 <template>
-  <div class="card participant-form">
-    <h2 class="card-title">成員管理</h2>
-    <div class="form-group">
-      <label>新增成員</label>
-      <div class="input-with-button">
-        <input 
-          v-model="newParticipant" 
-          type="text" 
-          placeholder="輸入成員名稱" 
-          @keyup.enter="addParticipant"
-        />
-        <button class="btn btn-primary" @click="addParticipant">
-          <i class="icon">+</i> 新增
-        </button>
-      </div>
-    </div>
-    
-    <div class="participants-list" v-if="participants.length > 0">
-      <h3>成員列表</h3>
-      <div class="participant-items">
-        <div 
-          v-for="(p, index) in participants" 
-          :key="index"
-          class="participant-item"
-        >
-          <div class="participant-name">{{ p }}</div>
-          <button class="btn btn-small btn-danger" @click="removeParticipant(index)">
-            <i class="icon">×</i>
+  <div class="container">
+    <h1 class="title">成員設定</h1>
+    <div class="card participant-form">
+      <h2 class="card-title">成員管理</h2>
+      <div class="form-group">
+        <label>新增成員</label>
+        <div class="input-with-button">
+          <input 
+            v-model="newParticipant" 
+            type="text" 
+            placeholder="輸入成員名稱" 
+            @keyup.enter="addParticipant"
+          />
+          <button class="btn btn-primary" @click="addParticipant">
+            <i class="icon">+</i> 新增
           </button>
+        </div>
+      </div>
+      
+      <div class="participants-list" v-if="participants.length > 0">
+        <h3>成員列表</h3>
+        <div class="participant-items">
+          <div 
+            v-for="(p, index) in participants" 
+            :key="index"
+            class="participant-item"
+          >
+            <div class="participant-name">{{ p }}</div>
+            <button class="btn btn-small btn-danger" @click="removeParticipant(index)">
+              <i class="icon">×</i>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -89,6 +92,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: #333;
+}
+
+.title {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.2rem;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
 .card {
   background: white;
   border-radius: 8px;

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
-    <h1 class="title">多人分帳系統</h1>
-    
+    <h1 class="title">記帳</h1>
+
     <div class="card expense-form">
       <h2 class="card-title">新增支出</h2>
       <div class="form-group">
@@ -38,7 +38,7 @@
         </button>
       </div>
     </div>
-    
+
     <div class="card expense-records" v-if="expenses.length > 0">
       <h2 class="card-title">支出紀錄</h2>
       <div class="table-container">
@@ -67,16 +67,12 @@
         </button>
       </div>
     </div>
-    
+
     <div class="card settlement" v-if="hasSettlements">
       <h2 class="card-title">結算結果</h2>
       <div class="settlement-list">
-        <div 
-          v-for="(amount, person) in settlements" 
-          :key="person"
-          class="settlement-item"
-          :class="{ 'receive': amount > 0, 'pay': amount < 0 }"
-        >
+        <div v-for="(amount, person) in settlements" :key="person" class="settlement-item"
+          :class="{ 'receive': amount > 0, 'pay': amount < 0 }">
           <div class="person">{{ person }}</div>
           <div class="amount-label">
             <span v-if="amount > 0">應收</span>
@@ -86,7 +82,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="card payment-instructions" v-if="hasSettlements">
       <h2 class="card-title">付款指示</h2>
       <div class="payment-list">
@@ -125,7 +121,7 @@ const saveToLocalStorage = () => {
 const loadFromLocalStorage = () => {
   const savedExpenses = localStorage.getItem('expenses')
   const savedParticipants = localStorage.getItem('participants')
-  
+
   if (savedExpenses) {
     expenses.value = JSON.parse(savedExpenses)
   }
@@ -140,7 +136,7 @@ const addExpense = () => {
     alert('請填寫完整資訊')
     return
   }
-  
+
   // 解析參與者
   const participantsList = [...selectedParticipants.value];
 
@@ -151,7 +147,7 @@ const addExpense = () => {
     payer: expensePayer.value,
     participants: participantsList,
   })
-  
+
   // 清空表單欄位
   itemname.value = ''
   expenseAmount.value = ''
@@ -159,33 +155,41 @@ const addExpense = () => {
   selectedParticipants.value = []
 }
 
-// 計算結算結果
+// 正確邏輯的結算計算
 const settlements = computed(() => {
-  const result = {}
-  
-  // 初始化所有參與者的金額為 0
+  const balances = {}
+
+  // 初始化
   participants.value.forEach(p => {
-    result[p] = 0
+    balances[p] = 0
   })
-  
-  // 計算每筆支出後，誰欠誰多少
+
   expenses.value.forEach(expense => {
     const amountPerPerson = expense.amount / expense.participants.length
-    result[expense.payer] += expense.amount
-    
+
+    // 每位參與者負擔自己的 share
     expense.participants.forEach(p => {
-      result[p] -= amountPerPerson
+      balances[p] -= amountPerPerson
     })
+
+    // 付款人先付錢，應收整筆金額
+    balances[expense.payer] += expense.amount
   })
-  
-  return result
+
+  // 四捨五入至小數點後兩位
+  for (const key in balances) {
+    balances[key] = Math.round(balances[key] * 100) / 100
+  }
+
+  return balances
 })
+
 
 // 計算誰付給誰
 const paymentInstructions = computed(() => {
   const instructions = [];
   const settlementsValue = settlements.value;
-  
+
   // 複製結算資料
   const balance = {};
   for (const person in settlementsValue) {
@@ -193,27 +197,27 @@ const paymentInstructions = computed(() => {
       balance[person] = settlementsValue[person];
     }
   }
-  
+
   // 找出債務人和債權人
   const debtors = Object.keys(balance).filter(person => balance[person] < 0)
     .sort((a, b) => balance[a] - balance[b]); // 由小到大排序（最大負債在前）
-    
+
   const creditors = Object.keys(balance).filter(person => balance[person] > 0)
     .sort((a, b) => balance[b] - balance[a]); // 由大到小排序（最大債權在前）
-  
+
   // 計算債務人付款給債權人
   let i = 0, j = 0;
   while (i < debtors.length && j < creditors.length) {
     const debtor = debtors[i];
     const creditor = creditors[j];
-    
+
     // 債務金額（正數）和債權金額
     const debt = Math.abs(balance[debtor]);
     const credit = balance[creditor];
-    
+
     // 計算轉帳金額
     const amount = Math.min(debt, credit);
-    
+
     if (amount > 0.1) { // 忽略極小的金額
       instructions.push({
         from: debtor,
@@ -221,16 +225,16 @@ const paymentInstructions = computed(() => {
         amount: amount
       });
     }
-    
+
     // 更新餘額
     balance[debtor] += amount;
     balance[creditor] -= amount;
-    
+
     // 如果債務或債權已清償，移至下一位
     if (Math.abs(balance[debtor]) < 0.1) i++;
     if (Math.abs(balance[creditor]) < 0.1) j++;
   }
-  
+
   return instructions;
 });
 
@@ -271,13 +275,14 @@ window.addEventListener('storage', (event) => {
 // 頁面加載時讀取資料
 onMounted(() => {
   loadFromLocalStorage()
-  
+
   // 定期檢查 participants 更新
   setInterval(() => {
     loadParticipants()
   }, 2000)
 })
 </script>
+
 
 <style scoped>
 .container {
@@ -326,7 +331,8 @@ onMounted(() => {
   color: #555;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -335,7 +341,8 @@ input, select {
   transition: border-color 0.3s;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
   border-color: #3498db;
   outline: none;
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
@@ -392,7 +399,8 @@ input:focus, select:focus {
   border-collapse: collapse;
 }
 
-.expense-table th, .expense-table td {
+.expense-table th,
+.expense-table td {
   text-align: left;
   padding: 12px;
   border-bottom: 1px solid #eee;
@@ -522,55 +530,56 @@ input:focus, select:focus {
   .container {
     padding: 10px;
   }
-  
+
   .title {
     font-size: 1.8rem;
     margin-bottom: 20px;
   }
-  
+
   .card {
     padding: 15px;
     margin-bottom: 15px;
   }
-  
+
   .card-title {
     font-size: 1.2rem;
   }
-  
+
   .settlement-list {
     grid-template-columns: 1fr;
   }
-  
-  .expense-table th, .expense-table td {
+
+  .expense-table th,
+  .expense-table td {
     padding: 8px;
     font-size: 14px;
   }
-  
+
   .settlement-item .amount {
     font-size: 1.2rem;
   }
-  
+
   .btn {
     padding: 8px 12px;
     font-size: 14px;
   }
-  
+
   .participant-checkboxes {
     grid-template-columns: 1fr;
   }
-  
+
   .payment-arrow {
     flex-direction: column;
     align-items: flex-start;
     gap: 2px;
   }
-  
+
   .payment-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 5px;
   }
-  
+
   .payment-amount {
     align-self: flex-end;
   }

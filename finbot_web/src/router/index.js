@@ -5,12 +5,14 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
 import Participants from '../components/participants.vue'
 import Accounting from '../components/accounting.vue'
+import ExpenseHistory from '../components/expenseHistory.vue'
 
 // 設定路由
 const routes = [
   { path: '/', component: HelloWorld },
   { path: '/participants', component: Participants },
-  { path: '/accounting', component: Accounting }
+  { path: '/accounting', component: Accounting },
+  { path: '/expenseHistory', component: ExpenseHistory}
 ]
 
 const router = createRouter({
