@@ -380,31 +380,51 @@ watch(expenses, () => {
 
 /* 手機版優化 */
 @media (max-width: 600px) {
+  .container {
+    padding: 10px;
+    margin: 0 auto;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
   .card {
     padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  
+
   .payment-item {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .payment-arrow {
     margin-bottom: 8px;
   }
-  
+
   .btn {
     width: 100%;
     margin-top: 8px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
-  
-  .expense-table th, .expense-table td {
+
+  .expense-table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .expense-table th,
+  .expense-table td {
     padding: 8px 6px;
     font-size: 0.85rem;
   }
-  
+
   .title {
     font-size: 1.5rem;
+    text-align: center;
   }
 }
+
 </style>
