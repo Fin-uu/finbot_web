@@ -67,19 +67,22 @@
   font-style: normal;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px) { 
   .container {
     padding: 10px;
-  }
+    text-align: center; 
 
   .btn {
     font-size: 18px; 
     padding: 15px 20px; 
     width: auto;
+    margin: 10px auto; 
+    display: inline-block; 
   }
 
   .icon {
-    margin-right: 8px; /* 保持相同的圖示間距 */
+    margin-right: 8px; 
   }
 }
+
 </style>
