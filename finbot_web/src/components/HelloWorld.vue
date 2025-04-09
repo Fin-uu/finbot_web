@@ -3,7 +3,6 @@
     <h1 class="title">歡迎光臨🎉</h1>
     <div class="welcome-text">
       <p>這是一個可能不太好用的工具，</p>
-      <p>可以用來記帳、結算開銷。</p>
       <p>請使用上方選單進行操作。</p>
     </div>
   </div>

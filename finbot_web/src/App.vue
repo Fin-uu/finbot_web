@@ -75,12 +75,12 @@
 
   .btn {
     width: 100%;
-    font-size: 16px;
-    padding: 12px 16px;
+    font-size: 14px;
+    padding: 10px 12px;
   }
 
   .icon {
-    margin-right: 6px;
+    margin-right: 5px;
   }
 }
 </style>
