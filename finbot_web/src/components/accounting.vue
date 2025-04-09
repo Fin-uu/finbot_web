@@ -24,7 +24,9 @@
       <div class="form-group">
         <label>參與者</label>
         <div class="participant-checkboxes">
-          <div v-for="(p, index) in participants" :key="'checkbox-' + index" class="checkbox-item">
+          <div v-for="(p, index) in participants" :key="'checkbox-' + index" 
+               class="checkbox-item" 
+               :class="{ 'selected': selectedParticipants.includes(p) }">
             <label>
               <input type="checkbox" :value="p" v-model="selectedParticipants" />
               {{ p }}
@@ -61,46 +63,12 @@
           </tbody>
         </table>
       </div>
-      <div class="card-actions">
-        <button class="btn btn-danger" @click="clearExpense">
-          <i class="icon">×</i> 清空紀錄
-        </button>
-      </div>
-    </div>
-
-    <div class="card settlement" v-if="hasSettlements">
-      <h2 class="card-title">結算結果</h2>
-      <div class="settlement-list">
-        <div v-for="(amount, person) in settlements" :key="person" class="settlement-item"
-          :class="{ 'receive': amount > 0, 'pay': amount < 0 }">
-          <div class="person">{{ person }}</div>
-          <div class="amount-label">
-            <span v-if="amount > 0">應收</span>
-            <span v-else>應付</span>
-          </div>
-          <div class="amount">{{ Math.abs(amount).toFixed(1) }}</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card payment-instructions" v-if="hasSettlements">
-      <h2 class="card-title">付款指示</h2>
-      <div class="payment-list">
-        <div v-for="(payment, index) in paymentInstructions" :key="index" class="payment-item">
-          <div class="payment-arrow">
-            <span class="from">{{ payment.from }}</span>
-            <span class="arrow">→</span>
-            <span class="to">{{ payment.to }}</span>
-          </div>
-          <div class="payment-amount">{{ payment.amount.toFixed(1) }}</div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 
 // 資料存儲
 const expenses = ref([])  // 儲存所有支出紀錄
@@ -155,103 +123,6 @@ const addExpense = () => {
   selectedParticipants.value = []
 }
 
-// 正確邏輯的結算計算
-const settlements = computed(() => {
-  const balances = {}
-
-  // 初始化
-  participants.value.forEach(p => {
-    balances[p] = 0
-  })
-
-  expenses.value.forEach(expense => {
-    const amountPerPerson = expense.amount / expense.participants.length
-
-    // 每位參與者負擔自己的 share
-    expense.participants.forEach(p => {
-      balances[p] -= amountPerPerson
-    })
-
-    // 付款人先付錢，應收整筆金額
-    balances[expense.payer] += expense.amount
-  })
-
-  // 四捨五入至小數點後兩位
-  for (const key in balances) {
-    balances[key] = Math.round(balances[key] * 100) / 100
-  }
-
-  return balances
-})
-
-
-// 計算誰付給誰
-const paymentInstructions = computed(() => {
-  const instructions = [];
-  const settlementsValue = settlements.value;
-
-  // 複製結算資料
-  const balance = {};
-  for (const person in settlementsValue) {
-    if (Math.abs(settlementsValue[person]) > 0.1) { // 忽略極小的金額差異
-      balance[person] = settlementsValue[person];
-    }
-  }
-
-  // 找出債務人和債權人
-  const debtors = Object.keys(balance).filter(person => balance[person] < 0)
-    .sort((a, b) => balance[a] - balance[b]); // 由小到大排序（最大負債在前）
-
-  const creditors = Object.keys(balance).filter(person => balance[person] > 0)
-    .sort((a, b) => balance[b] - balance[a]); // 由大到小排序（最大債權在前）
-
-  // 計算債務人付款給債權人
-  let i = 0, j = 0;
-  while (i < debtors.length && j < creditors.length) {
-    const debtor = debtors[i];
-    const creditor = creditors[j];
-
-    // 債務金額（正數）和債權金額
-    const debt = Math.abs(balance[debtor]);
-    const credit = balance[creditor];
-
-    // 計算轉帳金額
-    const amount = Math.min(debt, credit);
-
-    if (amount > 0.1) { // 忽略極小的金額
-      instructions.push({
-        from: debtor,
-        to: creditor,
-        amount: amount
-      });
-    }
-
-    // 更新餘額
-    balance[debtor] += amount;
-    balance[creditor] -= amount;
-
-    // 如果債務或債權已清償，移至下一位
-    if (Math.abs(balance[debtor]) < 0.1) i++;
-    if (Math.abs(balance[creditor]) < 0.1) j++;
-  }
-
-  return instructions;
-});
-
-// 檢查是否有結算資料
-const hasSettlements = computed(() => {
-  return Object.keys(settlements.value).length > 0
-})
-
-// 清空紀錄
-const clearExpense = () => {
-  if (confirm('要把紀錄清掉囉!')) {
-    expenses.value = []
-    // 清空 LocalStorage
-    localStorage.removeItem('expenses')
-  }
-}
-
 // 監聽資料變化，自動保存
 watch(expenses, () => {
   saveToLocalStorage()
@@ -283,12 +154,16 @@ onMounted(() => {
 })
 </script>
 
-
 <style scoped>
+* {
+  box-sizing: border-box;
+}
+
 .container {
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 15px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #333;
 }
@@ -296,8 +171,8 @@ onMounted(() => {
 .title {
   text-align: center;
   color: #2c3e50;
-  margin-bottom: 30px;
-  font-size: 2.2rem;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
   border-bottom: 2px solid #eee;
   padding-bottom: 10px;
 }
@@ -306,15 +181,15 @@ onMounted(() => {
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-  margin-bottom: 25px;
+  padding: 20px;
+  margin-bottom: 20px;
   width: 100%;
 }
 
 .card-title {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   margin-top: 0;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   color: #3498db;
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
@@ -334,11 +209,12 @@ onMounted(() => {
 input,
 select {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
   transition: border-color 0.3s;
+  -webkit-appearance: none; /* 改善 iOS 上的樣式 */
 }
 
 input:focus,
@@ -348,17 +224,27 @@ select:focus {
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
+/* 改善移動設備上的 select 外觀 */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%23333' d='M0 0h10L5 5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 10px 5px;
+  padding-right: 30px;
+}
+
 .btn {
-  padding: 10px 15px;
+  padding: 12px 16px;
   border: none;
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.3s;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  max-width: 200px;
+  font-weight: 500;
+  min-width: 120px;
 }
 
 .card-actions {
@@ -376,15 +262,6 @@ select:focus {
   background-color: #2980b9;
 }
 
-.btn-danger {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.btn-danger:hover {
-  background-color: #c0392b;
-}
-
 .icon {
   margin-right: 5px;
   font-weight: bold;
@@ -392,23 +269,28 @@ select:focus {
 
 .table-container {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* 提升 iOS 滑動體驗 */
 }
 
 .expense-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 300px; /* 確保在小螢幕上可以水平滾動 */
 }
 
 .expense-table th,
 .expense-table td {
   text-align: left;
-  padding: 12px;
+  padding: 10px 8px;
   border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
 }
 
 .expense-table th {
   background-color: #f8f9fa;
   color: #555;
+  position: sticky;
+  top: 0;
 }
 
 .expense-table tr:hover {
@@ -420,168 +302,103 @@ select:focus {
   font-weight: bold;
 }
 
-.settlement-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 15px;
-}
-
-.settlement-item {
-  padding: 15px;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.settlement-item .person {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-.settlement-item .amount {
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-.settlement-item.receive {
-  background-color: #e6f7ee;
-  border-left: 4px solid #2ecc71;
-}
-
-.settlement-item.pay {
-  background-color: #fdeaea;
-  border-left: 4px solid #e74c3c;
-}
-
-.amount-label {
-  font-size: 0.85rem;
-  color: #777;
-  margin-bottom: 2px;
-}
-
 .participant-checkboxes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 10px;
 }
 
 .checkbox-item {
   background-color: #f8f9fa;
-  padding: 8px 12px;
+  padding: 10px;
   border-radius: 4px;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
 }
 
 .checkbox-item:hover {
   background-color: #e9ecef;
 }
 
-/* 新增的付款指示樣式 */
-.payment-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+/* 選中的樣式 */
+.checkbox-item.selected {
+  background-color: #2c3e50;
+  color: white;
 }
 
-.payment-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 15px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  border-left: 4px solid #3498db;
-  transition: background-color 0.2s;
-}
-
-.payment-item:hover {
-  background-color: #e9ecef;
-}
-
-.payment-arrow {
+.checkbox-item label {
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
+  margin-bottom: 0;
+  width: 100%;
 }
 
-.payment-arrow .from {
-  font-weight: bold;
-  color: #e74c3c;
+.checkbox-item input[type="checkbox"] {
+  width: auto;
+  margin: 0;
 }
 
-.payment-arrow .to {
-  font-weight: bold;
-  color: #2ecc71;
-}
-
-.payment-arrow .arrow {
-  font-size: 1.2rem;
-  color: #7f8c8d;
-}
-
-.payment-amount {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #3498db;
-}
-
+/* 響應式樣式 */
 @media (max-width: 600px) {
   .container {
     padding: 10px;
   }
 
   .title {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
   }
 
   .card {
     padding: 15px;
     margin-bottom: 15px;
+    border-radius: 6px;
   }
 
   .card-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
   }
 
-  .settlement-list {
-    grid-template-columns: 1fr;
+  .form-group label {
+    font-size: 0.95rem;
+  }
+
+  input, select {
+    padding: 10px;
+    font-size: 15px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
   }
 
   .expense-table th,
   .expense-table td {
-    padding: 8px;
-    font-size: 14px;
+    padding: 8px 6px;
+    font-size: 0.85rem;
   }
-
-  .settlement-item .amount {
-    font-size: 1.2rem;
-  }
-
-  .btn {
-    padding: 8px 12px;
-    font-size: 14px;
-  }
-
+  
   .participant-checkboxes {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
-
-  .payment-arrow {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
+  
+  .checkbox-item {
+    padding: 8px;
   }
+}
 
-  .payment-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
+/* 修復 Safari 上的一些輸入樣式問題 */
+@supports (-webkit-overflow-scrolling: touch) {
+  input {
+    font-size: 16px; /* 防止 iOS 上的縮放 */
   }
-
-  .payment-amount {
-    align-self: flex-end;
+  
+  select {
+    font-size: 16px;
   }
 }
 </style>
