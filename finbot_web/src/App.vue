@@ -67,20 +67,19 @@
   font-style: normal;
 }
 
-/* 手機版樣式 */
 @media (max-width: 600px) {
   .container {
     padding: 10px;
   }
 
   .btn {
-    width: 100%;
-    font-size: 14px;
-    padding: 10px 12px;
+    font-size: 18px; 
+    padding: 15px 20px; 
+    width: auto;
   }
 
   .icon {
-    margin-right: 5px;
+    margin-right: 8px; /* 保持相同的圖示間距 */
   }
 }
 </style>

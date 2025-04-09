@@ -378,33 +378,65 @@ watch(expenses, () => {
   margin: 0 8px;
 }
 
-/* 手機版優化 */
 @media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+  }
+
   .card {
     padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
   }
-  
-  .payment-item {
-    flex-direction: column;
-    align-items: flex-start;
+
+  .card-title {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
   }
-  
-  .payment-arrow {
-    margin-bottom: 8px;
+
+  .form-group label {
+    font-size: 0.95rem;
   }
-  
+
+  input, select {
+    padding: 10px;
+    font-size: 15px;
+  }
+
   .btn {
     width: 100%;
-    margin-top: 8px;
+    padding: 10px 12px;
+    font-size: 15px;
   }
-  
-  .expense-table th, .expense-table td {
+
+  .expense-table th,
+  .expense-table td {
     padding: 8px 6px;
     font-size: 0.85rem;
   }
   
-  .title {
-    font-size: 1.5rem;
+  .participant-checkboxes {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+  
+  .checkbox-item {
+    padding: 8px;
+  }
+}
+
+/* 修復 Safari 上的一些輸入樣式問題 */
+@supports (-webkit-overflow-scrolling: touch) {
+  input {
+    font-size: 16px; /* 防止 iOS 上的縮放 */
+  }
+  
+  select {
+    font-size: 16px;
   }
 }
 </style>
