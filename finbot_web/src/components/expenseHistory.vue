@@ -5,6 +5,39 @@
     <!-- 支出紀錄 -->
     <div class="card expense-records" v-if="expenses.length > 0">
       <h2 class="card-title">支出紀錄</h2>
+
+      <!-- 桌機用表格 -->
+  <div class="table-container desktop-only">
+    <table class="expense-table">
+      <thead>
+        <tr>
+          <th>品項</th>
+          <th>金額</th>
+          <th>付款人</th>
+          <th>參與者</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(expense, index) in expenses" :key="index">
+          <td>{{ expense.itemname }}</td>
+          <td class="amount">{{ expense.amount }}</td>
+          <td>{{ expense.payer }}</td>
+          <td>{{ expense.participants.join(', ') }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 手機用卡片 -->
+  <div class="expense-cards mobile-only">
+    <div v-for="(expense, index) in expenses" :key="index" class="expense-card">
+      <div><strong>品項：</strong>{{ expense.itemname }}</div>
+      <div><strong>金額：</strong>{{ expense.amount }}</div>
+      <div><strong>付款人：</strong>{{ expense.payer }}</div>
+      <div><strong>參與者：</strong>{{ expense.participants.join(', ') }}</div>
+    </div>
+  </div>
+
       <div class="table-container">
         <table class="expense-table">
           <thead>
@@ -378,33 +411,32 @@ watch(expenses, () => {
   margin: 0 8px;
 }
 
-/* 手機版優化 */
+/* 手機模式顯示卡片版本 */
 @media (max-width: 600px) {
-  .card {
-    padding: 10px;
+  .desktop-only {
+    display: none;
   }
-  
-  .payment-item {
+  .mobile-only {
+    display: block;
+  }
+
+  .expense-cards {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    gap: 10px;
   }
-  
-  .payment-arrow {
-    margin-bottom: 8px;
+
+  .expense-card {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-left: 4px solid #3498db;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    font-size: 0.9rem;
   }
-  
-  .btn {
-    width: 100%;
-    margin-top: 8px;
-  }
-  
-  .expense-table th, .expense-table td {
-    padding: 8px 6px;
-    font-size: 0.85rem;
-  }
-  
-  .title {
-    font-size: 1.5rem;
+
+  .expense-card strong {
+    color: #2c3e50;
   }
 }
 </style>
