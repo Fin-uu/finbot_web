@@ -5,10 +5,10 @@
   <div class="container">
     <div class="card-actions">
       <div class="nav-tabs">
-      <router-link to="/" class="nav-tab">
-        <i class="icon">📝</i> <span>切換模式</span>
-      </router-link>
-    </div>
+        <router-link to="/" class="nav-tab">
+          <i class="icon">📝</i> <span>切換模式</span>
+        </router-link>
+      </div>
     </div>
   </div>
 
@@ -16,6 +16,7 @@
   <router-view></router-view>
 </template>
 
+<!-- ✅ Scoped：只限本元件使用的樣式 -->
 <style scoped>
 .container {
   max-width: 800px;
@@ -63,22 +64,38 @@
   font-style: normal;
 }
 
-@media (max-width: 600px) { 
+@media (max-width: 600px) {
   .container {
     padding: 10px;
-    text-align: center; 
+    text-align: center;
+  }
 
   .btn {
-    font-size: 18px; 
-    padding: 15px 20px; 
+    font-size: 18px;
+    padding: 15px 20px;
     width: auto;
-    margin: 10px auto; 
-    display: inline-block; 
+    margin: 10px auto;
+    display: inline-block;
   }
 
   .icon {
-    margin-right: 8px; 
+    margin-right: 8px;
   }
 }
+</style>
+
+<!-- ✅ 全域樣式（背景統一色） -->
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f3f1ee; /* 莫蘭迪灰白 */
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+}
+
+#app {
+  min-height: 100vh;
+  background-color: #f3f1ee; /* 跟 body 一樣 */
 }
 </style>
