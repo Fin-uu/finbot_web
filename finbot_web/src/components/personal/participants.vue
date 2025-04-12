@@ -173,14 +173,14 @@ onMounted(loadFromLocalStorage)
 }
 
 .btn-small {
-      padding: 5px;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      font-size: 16px;
+  padding: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 16px;
 }
 .btn-small .icon {
       margin-right: 0;
@@ -274,6 +274,11 @@ input:focus {
   }
   .btn {
     width: 100%;
+  }
+  .btn-small {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
   }
 }
 </style>

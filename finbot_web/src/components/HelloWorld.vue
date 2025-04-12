@@ -26,7 +26,7 @@ const router = useRouter()
 
 function handleGroupAccess() {
   const password = prompt("請輸入通關密語：")
-  if (password === "sasa") {
+  if (password?.trim().toLowerCase() === "sasa") {
     router.push("/groupHome")
   } else {
     alert("你不能用這個功能喔!")

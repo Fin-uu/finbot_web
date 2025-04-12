@@ -330,11 +330,24 @@ select:focus {
 
 /* 響應式設計 */
 @media (max-width: 600px) {
-  .input-row {
-    flex-direction: column;
+  input,
+  select {
+    font-size: 14px;
+    padding: 8px 10px;
   }
-  .btn {
-    width: 100%;
+
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .participant-checkboxes {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+  }
+
+  .card {
+    padding: 20px;
   }
 }
+
 </style>
