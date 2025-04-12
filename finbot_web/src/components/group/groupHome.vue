@@ -3,10 +3,10 @@
     <h1 class="page-title">歡迎使用多人模式</h1>
 
     <div class="card welcome-card">
-      <h2 class="section-title">使用指南</h2>
+      <h2 class="section-title">功能選單</h2>
       <div class="welcome-text">
-        <p>這是一個可能不太好用的工具，</p>
-        <p>請使用上方選單進行操作。</p>
+        <p></p>
+        <p>請選擇下方功能</p>
       </div>
 
       <div class="quick-actions">
@@ -91,18 +91,22 @@
 
 /* 按鈕樣式 */
 .btn {
-  padding: 12px 20px;
-  font-size: 16px;
+  padding: 15px 20px;
+  font-size: 18px;
   border: none;
   border-radius: 12px;
-  font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
   text-decoration: none;
   display: flex;
   align-items: center;
-  transition: all 0.3s ease;
+  justify-content: center;
+  font-weight: bold;
   color: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  width: 100%; /* 確保按鈕不超出父元素 */
+  box-sizing: border-box; /* 確保 padding 不會增加元素寬度 */
+  word-break: break-word; /* 避免長文字造成溢出 */
 }
 
 .btn-moss {
