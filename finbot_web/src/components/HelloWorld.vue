@@ -78,10 +78,12 @@ function handleGroupAccess() {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  align-items: stretch;
 }
 
 /* 通用按鈕 */
 .btn {
+  width: 100%;
   padding: 15px 20px;
   font-size: 18px;
   border: none;
@@ -92,7 +94,6 @@ function handleGroupAccess() {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 200px;
   font-weight: bold;
   color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
