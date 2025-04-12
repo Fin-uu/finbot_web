@@ -11,9 +11,9 @@
         <router-link to="/personalHome" class="btn btn-moss">
           <i class="icon">📊</i> 個人使用
         </router-link>
-        <router-link to="/groupHome" class="btn btn-bluegrey" @click="handleGroupAccess">
+        <button class="btn btn-bluegrey" @click="handleGroupAccess">
           <i class="icon">👫</i> 與朋友共用
-        </router-link>
+        </button>
       </div>
     </div>
   </div>

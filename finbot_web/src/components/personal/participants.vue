@@ -173,8 +173,17 @@ onMounted(loadFromLocalStorage)
 }
 
 .btn-small {
-  padding: 6px 10px;
-  font-size: 0.9rem;
+      padding: 5px;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 16px;
+}
+.btn-small .icon {
+      margin-right: 0;
 }
 
 /* 圖示 */
