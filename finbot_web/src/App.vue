@@ -4,15 +4,11 @@
 <template>
   <div class="container">
     <div class="card-actions">
-      <router-link to="/participants" class="btn btn-primary">
-        <i class="icon">👥</i> 參與者設定
+      <div class="nav-tabs">
+      <router-link to="/" class="nav-tab">
+        <i class="icon">📝</i> <span>切換模式</span>
       </router-link>
-      <router-link to="/accounting" class="btn btn-primary">
-        <i class="icon">📝</i> 記帳
-      </router-link>
-      <router-link to="/expenseHistory" class="btn btn-primary">
-        <i class="icon">📊</i> 紀錄
-      </router-link>
+    </div>
     </div>
   </div>
 

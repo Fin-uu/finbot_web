@@ -1,10 +1,22 @@
 <template>
   <div class="container">
-    <h1 class="title">紀錄</h1>
+    <h1 class="page-title">紀錄</h1>
+
+    <div class="card-actions">
+      <router-link to="/participants" class="btn btn-moss">
+        <i class="icon">👥</i> 參與者設定
+      </router-link>
+      <router-link to="/accounting" class="btn btn-bluegrey">
+        <i class="icon">📝</i> 記帳
+      </router-link>
+      <router-link to="/expenseHistory" class="btn btn-rose">
+        <i class="icon">📊</i> 紀錄
+      </router-link>
+    </div>
     
     <!-- 支出紀錄 -->
     <div class="card expense-records" v-if="expenses.length > 0">
-      <h2 class="card-title">支出紀錄</h2>
+      <h2 class="section-title">支出紀錄</h2>
       <div class="table-container">
         <table class="expense-table">
           <thead>
@@ -34,7 +46,7 @@
 
     <!-- 結算結果 -->
     <div class="card settlement" v-if="settlement.length > 0">
-      <h2 class="card-title">結算結果</h2>
+      <h2 class="section-title">結算結果</h2>
       <div class="settlement-table">
         <table class="expense-table">
           <thead>
@@ -55,7 +67,7 @@
 
     <!-- 付款指示 -->
     <div class="card payment-instructions" v-if="paymentInstructions.length > 0">
-      <h2 class="card-title">付款指示</h2>
+      <h2 class="section-title">付款指示</h2>
       <div class="payment-list">
         <div v-for="(item, index) in paymentInstructions" :key="index" class="payment-item">
           <div class="payment-arrow">
@@ -213,42 +225,103 @@ watch(expenses, () => {
 </script>
 
 <style scoped>
+/* 背景與版面 */
 .container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 15px;
+  background: linear-gradient(135deg, #f3f1ee, #e9ecef);
+  min-height: 100vh;
+  padding: 40px 20px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  color: #333;
+  color: #3e3e3e;
 }
 
-.title {
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
   text-align: center;
-  color: #2c3e50;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  border-bottom: 2px solid #eee;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #ccc;
   padding-bottom: 10px;
 }
 
+/* 卡片樣式 */
 .card {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  padding: 30px;
+  margin-bottom: 30px;
+  animation: fadeIn 0.5s ease;
 }
 
-.card-title {
-  font-size: 1.2rem;
+/* 章節標題 */
+.section-title {
+  font-size: 1.5rem;
   margin-top: 0;
-  margin-bottom: 15px;
-  color: #3498db;
+  margin-bottom: 20px;
+  color: #3e3e3e;
   border-bottom: 1px solid #eee;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
 }
 
+/* 按鈕群組 */
+.card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+/* 按鈕樣式 */
+.btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.btn-moss {
+  background-color: #9ba39b;
+}
+.btn-moss:hover {
+  background-color: #869087;
+}
+
+.btn-bluegrey {
+  background-color: #a2b1b6;
+}
+.btn-bluegrey:hover {
+  background-color: #8e9ca1;
+}
+
+.btn-rose {
+  background-color: #d8a7a7;
+}
+.btn-rose:hover {
+  background-color: #c29292;
+}
+
+.btn-danger {
+  background-color: #e07474;
+}
+.btn-danger:hover {
+  background-color: #c05c5c;
+}
+
+/* 圖示 */
+.icon {
+  margin-right: 6px;
+}
+
+/* 表格樣式 */
 .table-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch; /* 提升 iOS 滑動體驗 */
@@ -257,25 +330,22 @@ watch(expenses, () => {
 .expense-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 300px; /* 確保在小螢幕上可以水平滾動 */
 }
 
-.expense-table th, .expense-table td {
+.expense-table th,
+.expense-table td {
   text-align: left;
   padding: 10px 8px;
   border-bottom: 1px solid #eee;
-  font-size: 0.9rem;
 }
 
 .expense-table th {
   background-color: #f8f9fa;
   color: #555;
-  position: sticky;
-  top: 0;
 }
 
 .expense-table tr:hover {
-  background-color: #f8f9fa;
+  background-color: #f8f8ec;
 }
 
 .expense-table .amount {
@@ -283,52 +353,11 @@ watch(expenses, () => {
   font-weight: bold;
 }
 
-.btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.card-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-}
-
-.btn-primary {
-  background-color: #3498db;
-  color: white;
-  min-width: 80px;
-}
-
-.btn-primary:hover {
-  background-color: #2980b9;
-}
-
-.btn-danger {
-  background-color: #e74c3c;
-  color: white;
-}
-
-.btn-danger:hover {
-  background-color: #c0392b;
-}
-
-.icon {
-  margin-right: 5px;
-  font-weight: bold;
-}
-
+/* 付款指示樣式 */
 .payment-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .payment-item {
@@ -336,95 +365,67 @@ watch(expenses, () => {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  padding: 10px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  border-left: 4px solid #3498db;
+  gap: 10px;
+  padding: 15px;
+  background-color: #f8f8ec;
+  border-radius: 12px;
+  border-left: 4px solid #a3bfa7;
   transition: background-color 0.2s;
 }
 
 .payment-item:hover {
-  background-color: #e9ecef;
+  background-color: #f1f3e8;
 }
 
 .payment-arrow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex: 1;
-  min-width: 150px;
 }
 
 .payment-arrow .from {
   font-weight: bold;
-  color: #e74c3c;
+  color: #e07474;
 }
 
 .payment-arrow .to {
   font-weight: bold;
-  color: #2ecc71;
+  color: #9ba39b;
 }
 
 .payment-arrow .arrow {
-  font-size: 1.1rem;
-  color: #7f8c8d;
+  font-size: 1.2rem;
+  color: #a2b1b6;
 }
 
 .payment-amount {
   font-weight: bold;
-  font-size: 1.1rem;
-  color: #3498db;
-  margin: 0 8px;
+  font-size: 1.2rem;
+  color: #3e3e3e;
 }
 
-/* 手機版優化 */
+/* 響應式設計 */
 @media (max-width: 600px) {
   .container {
-    padding: 10px;
-    margin: 0 auto;
-    max-width: 100%;
-    box-sizing: border-box;
+    padding: 20px 15px;
   }
-
+  
   .card {
-    padding: 10px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 20px;
   }
-
+  
   .payment-item {
     flex-direction: column;
     align-items: flex-start;
   }
-
+  
   .payment-arrow {
     margin-bottom: 8px;
   }
-
+  
   .btn {
     width: 100%;
-    margin-top: 8px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .expense-table {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .expense-table th,
-  .expense-table td {
-    padding: 8px 6px;
-    font-size: 0.85rem;
-  }
-
-  .title {
-    font-size: 1.5rem;
-    text-align: center;
   }
 }
-
 </style>

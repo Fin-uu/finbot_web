@@ -1,18 +1,21 @@
 <template>
   <div class="container">
     <div class="card">
-      <h1 class="title">歡迎光臨 🎉</h1>
+      <h1 class="title">歡迎使用個人模式</h1>
       <div class="welcome-text">
         <p>這是一個可能不太好用的工具，</p>
         <p>請使用上方選單進行操作。</p>
       </div>
 
       <div class="btn-group">
-        <router-link to="/personalHome" class="btn btn-moss">
-          <i class="icon">📊</i> 個人使用
+        <router-link to="/participants" class="btn btn-moss">
+          <i class="icon">👥</i> 參與者設定
         </router-link>
-        <router-link to="/groupHome" class="btn btn-bluegrey" @click="handleGroupAccess">
-          <i class="icon">👫</i> 與朋友共用
+        <router-link to="/accounting" class="btn btn-bluegrey">
+          <i class="icon">📝</i> 記帳
+        </router-link>
+        <router-link to="/expenseHistory" class="btn btn-rose">
+          <i class="icon">📊</i> 紀錄
         </router-link>
       </div>
     </div>
@@ -20,19 +23,7 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
-function handleGroupAccess() {
-  const password = prompt("請輸入通關密語：")
-  if (password === "sasa") {
-    router.push("/groupHome")
-  } else {
-    alert("你不能用這個功能喔!")
-    router.push("/")
-  }
-}
+// 可以在這裡添加首頁邏輯
 </script>
 
 <style scoped>
@@ -98,7 +89,7 @@ function handleGroupAccess() {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* 莫蘭迪風格配色 */
+/* 莫蘭迪風格按鈕色彩 */
 .btn-moss {
   background-color: #9ba39b;
 }
@@ -137,7 +128,7 @@ function handleGroupAccess() {
   }
 }
 
-/* 響應式 */
+/* RWD */
 @media (max-width: 600px) {
   .card {
     padding: 30px 20px;

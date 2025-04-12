@@ -1,9 +1,21 @@
-<template>
+<template> 
   <div class="container">
-    <h1 class="title">記帳</h1>
+    <h1 class="page-title">記帳</h1>
+
+    <div class="card-actions">
+      <router-link to="/participants" class="btn btn-moss">
+        <i class="icon">👥</i> 參與者設定
+      </router-link>
+      <router-link to="/accounting" class="btn btn-bluegrey">
+        <i class="icon">📝</i> 記帳
+      </router-link>
+      <router-link to="/expenseHistory" class="btn btn-rose">
+        <i class="icon">📊</i> 紀錄
+      </router-link>
+    </div>
 
     <div class="card expense-form">
-      <h2 class="card-title">新增支出</h2>
+      <h2 class="section-title">新增支出</h2>
       <div class="form-group">
         <label>品項</label>
         <input v-model="itemname" type="text" placeholder="例如: 晚餐、計程車" />
@@ -35,14 +47,14 @@
         </div>
       </div>
       <div class="card-actions">
-        <button class="btn btn-primary" @click="addExpense">
+        <button class="btn btn-moss" @click="addExpense">
           <i class="icon">+</i> 新增支出
         </button>
       </div>
     </div>
 
     <div class="card expense-records" v-if="expenses.length > 0">
-      <h2 class="card-title">支出紀錄</h2>
+      <h2 class="section-title">支出紀錄</h2>
       <div class="table-container">
         <table class="expense-table">
           <thead>
@@ -155,55 +167,106 @@ onMounted(() => {
 </script>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-}
-
+/* 背景與版面 */
 .container {
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 15px;
+  background: linear-gradient(135deg, #f3f1ee, #e9ecef);
+  min-height: 100vh;
+  padding: 40px 20px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  color: #333;
+  color: #3e3e3e;
 }
 
-.title {
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
   text-align: center;
-  color: #2c3e50;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  border-bottom: 2px solid #eee;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #ccc;
   padding-bottom: 10px;
 }
 
+/* 卡片樣式 */
 .card {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
-  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  padding: 30px;
+  margin-bottom: 30px;
+  animation: fadeIn 0.5s ease;
 }
 
-.card-title {
-  font-size: 1.3rem;
-  margin-top: 0;
-  margin-bottom: 15px;
-  color: #3498db;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+/* 按鈕群組 */
+.card-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
+/* 按鈕樣式 */
+.btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.btn-moss {
+  background-color: #9ba39b;
+}
+.btn-moss:hover {
+  background-color: #869087;
+}
+
+.btn-bluegrey {
+  background-color: #a2b1b6;
+}
+.btn-bluegrey:hover {
+  background-color: #8e9ca1;
+}
+
+.btn-rose {
+  background-color: #d8a7a7;
+}
+.btn-rose:hover {
+  background-color: #c29292;
+}
+
+.btn-danger {
+  background-color: #e07474;
+}
+.btn-danger:hover {
+  background-color: #c05c5c;
+}
+
+.btn-small {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
+
+/* 圖示 */
+.icon {
+  margin-right: 6px;
+}
+
+/* 表單區塊 */
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 5px;
   font-weight: bold;
-  color: #555;
+  display: block;
+  margin-bottom: 8px;
 }
 
 input,
@@ -213,8 +276,6 @@ select {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
-  transition: border-color 0.3s;
-  -webkit-appearance: none; /* 改善 iOS 上的樣式 */
 }
 
 input:focus,
@@ -224,58 +285,30 @@ select:focus {
   box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
 }
 
-/* 改善移動設備上的 select 外觀 */
-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='5' viewBox='0 0 10 5'%3E%3Cpath fill='%23333' d='M0 0h10L5 5z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 10px 5px;
-  padding-right: 30px;
+.participant-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
 }
 
-.btn {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
-  min-width: 120px;
-}
-
-.card-actions {
+.checkbox-item {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  align-items: center;
+  padding: 8px;
+  background: #f8f8ec;
+  border-radius: 10px;
+  border-left: 4px solid #a3bfa7;
 }
 
-.btn-primary {
-  background-color: #3498db;
+.checkbox-item.selected {
+  background-color: #2c3e50;
   color: white;
 }
 
-.btn-primary:hover {
-  background-color: #2980b9;
-}
-
-.icon {
-  margin-right: 5px;
-  font-weight: bold;
-}
-
-.table-container {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* 提升 iOS 滑動體驗 */
-}
-
+/* 支出紀錄 */
 .expense-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 300px; /* 確保在小螢幕上可以水平滾動 */
 }
 
 .expense-table th,
@@ -283,18 +316,11 @@ select {
   text-align: left;
   padding: 10px 8px;
   border-bottom: 1px solid #eee;
-  font-size: 0.95rem;
 }
 
 .expense-table th {
   background-color: #f8f9fa;
   color: #555;
-  position: sticky;
-  top: 0;
-}
-
-.expense-table tr:hover {
-  background-color: #f8f9fa;
 }
 
 .expense-table .amount {
@@ -302,103 +328,13 @@ select {
   font-weight: bold;
 }
 
-.participant-checkboxes {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 10px;
-}
-
-.checkbox-item {
-  background-color: #f8f9fa;
-  padding: 10px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.checkbox-item:hover {
-  background-color: #e9ecef;
-}
-
-/* 選中的樣式 */
-.checkbox-item.selected {
-  background-color: #2c3e50;
-  color: white;
-}
-
-.checkbox-item label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  margin-bottom: 0;
-  width: 100%;
-}
-
-.checkbox-item input[type="checkbox"] {
-  width: auto;
-  margin: 0;
-}
-
-/* 響應式樣式 */
+/* 響應式設計 */
 @media (max-width: 600px) {
-  .container {
-    padding: 10px;
+  .input-row {
+    flex-direction: column;
   }
-
-  .title {
-    font-size: 1.6rem;
-    margin-bottom: 15px;
-  }
-
-  .card {
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-  }
-
-  .card-title {
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-  }
-
-  .form-group label {
-    font-size: 0.95rem;
-  }
-
-  input, select {
-    padding: 10px;
-    font-size: 15px;
-  }
-
   .btn {
     width: 100%;
-    padding: 10px 12px;
-    font-size: 15px;
-  }
-
-  .expense-table th,
-  .expense-table td {
-    padding: 8px 6px;
-    font-size: 0.85rem;
-  }
-  
-  .participant-checkboxes {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-  
-  .checkbox-item {
-    padding: 8px;
-  }
-}
-
-/* 修復 Safari 上的一些輸入樣式問題 */
-@supports (-webkit-overflow-scrolling: touch) {
-  input {
-    font-size: 16px; /* 防止 iOS 上的縮放 */
-  }
-  
-  select {
-    font-size: 16px;
   }
 }
 </style>
