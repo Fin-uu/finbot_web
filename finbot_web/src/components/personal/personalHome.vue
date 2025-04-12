@@ -47,6 +47,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   text-align: center;
   animation: fadeIn 0.6s ease;
+  box-sizing: border-box; 
 }
 
 /* 標題 */
@@ -69,6 +70,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%; 
 }
 
 /* 通用按鈕 */
@@ -87,6 +89,9 @@
   font-weight: bold;
   color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  width: 100%; /* 確保按鈕不超出父元素 */
+  box-sizing: border-box; /* 確保 padding 不會增加元素寬度 */
+  word-break: break-word; /* 避免長文字造成溢出 */
 }
 
 /* 莫蘭迪風格按鈕色彩 */
@@ -114,6 +119,7 @@
 .icon {
   margin-right: 10px;
   font-style: normal;
+  flex-shrink: 0;
 }
 
 /* 動畫 */
@@ -133,7 +139,6 @@
   .card {
     padding: 30px 20px;
   }
-
   .btn {
     width: 100%;
   }

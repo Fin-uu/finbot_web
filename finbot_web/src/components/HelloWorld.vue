@@ -79,11 +79,11 @@ function handleGroupAccess() {
   flex-direction: column;
   gap: 16px;
   align-items: stretch;
+  width: 100%;
 }
 
 /* 通用按鈕 */
 .btn {
-  width: 100%;
   padding: 15px 20px;
   font-size: 18px;
   border: none;
@@ -97,6 +97,9 @@ function handleGroupAccess() {
   font-weight: bold;
   color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  width: 100%; /* 確保按鈕不超出父元素 */
+  box-sizing: border-box; /* 確保 padding 不會增加元素寬度 */
+  word-break: break-word; /* 避免長文字造成溢出 */
 }
 
 /* 莫蘭迪風格配色 */
@@ -124,6 +127,7 @@ function handleGroupAccess() {
 .icon {
   margin-right: 10px;
   font-style: normal;
+  flex-shrink: 0; 
 }
 
 /* 動畫 */
@@ -143,7 +147,6 @@ function handleGroupAccess() {
   .card {
     padding: 30px 20px;
   }
-
   .btn {
     width: 100%;
   }
