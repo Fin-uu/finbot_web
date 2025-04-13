@@ -1,6 +1,6 @@
 <template> 
   <div class="container">
-    <h1 class="page-title">歡迎使用多人模式</h1>
+    <h1 class="page-title">多人模式</h1>
 
     <div class="card welcome-card">
       <h2 class="section-title">功能選單</h2>

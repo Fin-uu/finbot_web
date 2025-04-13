@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="card">
-      <h1 class="title">歡迎使用個人模式</h1>
+      <h1 class="title">個人模式</h1>
       <div class="welcome-text">
         <p>這個模式的紀錄會存在你的瀏覽器裡，</p>
         <p>只有你自己看的到。</p>

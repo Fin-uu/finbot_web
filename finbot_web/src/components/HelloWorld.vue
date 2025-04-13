@@ -1,10 +1,25 @@
 <template>
   <div class="container">
     <div class="card">
-      <h1 class="title">歡迎光臨 🎉</h1>
+      <h1 class="title">又花錢了?</h1>
       <div class="welcome-text">
-        <p>這是一個可能不太好用的工具。</p>
+        <p>錢乃身外之物。</p> 
+        <p>如風，輕盈來去，無影無蹤。</p>
+        <p>我們手中握著的，不過是時間的流轉與世間的交換。</p>
+
+        <p>放開吧，讓錢隨風而行，讓心安於當下。</p> 
+        <p>反正錢，是用來消失的。</p>
       </div>
+
+      <!-- 點擊後顯示的文字 -->
+      <p v-if="showMessage" class="turtle-message">戳什麼戳!!</p>
+
+      <img 
+        src="../assets/turtle.png" 
+        alt="烏龜" 
+        class="hero-image" 
+        @click="handleTurtleClick"
+      />
 
       <div class="btn-group">
         <router-link to="/personalHome" class="btn btn-moss">
@@ -19,9 +34,11 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const showMessage = ref(false)
 
 function handleGroupAccess() {
   const password = prompt("請輸入通關密語：")
@@ -32,6 +49,14 @@ function handleGroupAccess() {
     router.push("/")
   }
 }
+
+  function handleTurtleClick() {
+  showMessage.value = true
+  setTimeout(() => {
+    showMessage.value = false
+  }, 1200)
+  }
+
 </script>
 
 <style scoped>
@@ -127,6 +152,19 @@ function handleGroupAccess() {
   margin-right: 10px;
   font-style: normal;
   flex-shrink: 0; 
+}
+.hero-image {
+  width: 200px;
+  height: auto;
+  margin: 20px auto;
+  display: block;
+  animation: fadeIn 0.6s ease;
+}
+.turtle-message {
+  margin-top: 10px;
+  color: #cb3d3d;
+  font-size: 30px;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 /* 動畫 */
