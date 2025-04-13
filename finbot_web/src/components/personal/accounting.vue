@@ -169,7 +169,7 @@ onMounted(() => {
 <style scoped>
 /* 背景與版面 */
 .container {
-  background: linear-gradient(135deg, #f3f1ee, #e9ecef);
+  background: linear-gradient(135deg, #f3f1ee, #f3f1ee);
   min-height: 100vh;
   padding: 40px 20px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -261,6 +261,9 @@ onMounted(() => {
 /* 表單區塊 */
 .form-group {
   margin-bottom: 20px;
+  max-width: 600px; /* 限制最大寬度 */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .form-group label {
@@ -274,9 +277,12 @@ select {
   width: 100%;
   padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 8px; 
   font-size: 16px;
+  box-sizing: border-box;
+  max-width: 100%; 
 }
+
 
 input:focus,
 select:focus {

@@ -18,68 +18,43 @@
 
 <!-- ✅ Scoped：只限本元件使用的樣式 -->
 <style scoped>
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
-  color: #333;
-}
-
-.card-actions {
+.nav-tabs {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  margin: 20px 0;
-  padding: 10px 0;
+  margin-bottom: 20px;
+  width: 100%;
 }
 
-.btn {
-  padding: 15px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.nav-tab {
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 12px;
   text-decoration: none;
-  background-color: #3498db;
-  color: white;
-  box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
-  min-width: 200px;
-  text-align: center;
+  color: #5a5a5a;
+  font-weight: 500;
+  background: linear-gradient(145deg, #ffffff, #f0eeeb);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.btn:hover {
-  background-color: #2980b9;
+.nav-tab:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(145deg, #ffffff, #f5f3f0);
 }
 
-.icon {
+.nav-tab .icon {
   margin-right: 8px;
-  font-style: normal;
+  font-size: 18px;
 }
 
+/* 讓按鈕在手機上也好看 */
 @media (max-width: 600px) {
-  .container {
-    padding: 10px;
-    text-align: center;
-  }
-
-  .btn {
-    font-size: 18px;
-    padding: 15px 20px;
-    width: auto;
-    margin: 10px auto;
-    display: inline-block;
-  }
-
-  .icon {
-    margin-right: 8px;
+  .nav-tab {
+    padding: 10px 16px;
+    font-size: 16px;
   }
 }
 </style>

@@ -298,7 +298,7 @@ export default {
   padding: 15px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #333;
-  background-color: #f5f7fa;
+  background-color: #f3f1ee;
   min-height: 100vh;
 }
 

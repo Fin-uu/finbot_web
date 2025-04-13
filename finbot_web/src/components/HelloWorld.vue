@@ -3,8 +3,7 @@
     <div class="card">
       <h1 class="title">歡迎光臨 🎉</h1>
       <div class="welcome-text">
-        <p>這是一個可能不太好用的工具，</p>
-        <p>請使用上方選單進行操作。</p>
+        <p>這是一個可能不太好用的工具。</p>
       </div>
 
       <div class="btn-group">
@@ -38,7 +37,7 @@ function handleGroupAccess() {
 <style scoped>
 /* 背景 */
 .container {
-  background: linear-gradient(135deg, #f3f1ee, #e9ecef);
+  background: linear-gradient(135deg, #f3f1ee, #f3f1ee);
   min-height: 100vh;
   padding: 40px 20px;
   display: flex;

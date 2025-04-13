@@ -6,7 +6,7 @@
       <h2 class="section-title">功能選單</h2>
       <div class="welcome-text">
         <p></p>
-        <p>請選擇下方功能</p>
+        <p></p>
       </div>
 
       <div class="quick-actions">
@@ -28,7 +28,7 @@
 <style scoped>
 /* 背景與版面 */
 .container {
-  background: linear-gradient(135deg, #f3f1ee, #e9ecef);
+  background: linear-gradient(135deg, #f3f1ee, #f3f1ee);
   min-height: 100vh;
   padding: 40px 20px;
   font-family: 'Helvetica Neue', Arial, sans-serif;

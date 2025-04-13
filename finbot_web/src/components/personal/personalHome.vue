@@ -3,8 +3,12 @@
     <div class="card">
       <h1 class="title">歡迎使用個人模式</h1>
       <div class="welcome-text">
-        <p>這是一個可能不太好用的工具，</p>
-        <p>請使用上方選單進行操作。</p>
+        <p>這個模式的紀錄會存在你的瀏覽器裡，</p>
+        <p>只有你自己看的到。</p>
+        <p>「 想消滅曾經奢侈的過去，</p>
+        <p>把瀏覽紀錄刪了就可以 ~</p>
+        <p>但刪除之前，記得還錢哦 ! 」</p>
+        <p></p>
       </div>
 
       <div class="btn-group">
@@ -29,7 +33,7 @@
 <style scoped>
 /* 背景 */
 .container {
-  background: linear-gradient(135deg, #f3f1ee, #e9ecef);
+  background: linear-gradient(135deg, #f3f1ee, #f3f1ee);
   min-height: 100vh;
   padding: 40px 20px;
   display: flex;

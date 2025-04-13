@@ -227,7 +227,7 @@ watch(expenses, () => {
 <style scoped>
 /* 背景與版面 */
 .container {
-  background: linear-gradient(135deg, #f3f1ee, #e9ecef);
+  background: linear-gradient(135deg, #f3f1ee, #f3f1ee);
   min-height: 100vh;
   padding: 40px 20px;
   font-family: 'Helvetica Neue', Arial, sans-serif;
