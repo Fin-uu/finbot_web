@@ -36,7 +36,8 @@
         <h2 class="card-title">新增支出</h2>
         <!-- Improved form layout -->
         <div class="form-grid">
-          <div class="form-group">
+
+          <div class="form-group full-width">
             <label for="itemname">品項</label>
             <input 
               id="itemname"
@@ -45,11 +46,23 @@
               placeholder="例如: 晚餐、計程車" 
             />
           </div>
-          
+          <div class="form-group">
+            <label for="amount">幣別</label>
+            <div class="currency-buttons">
+              <button 
+                v-for="c in ['$', '₱']" 
+                :key="c"
+                :class="{ active: selectedCurrency === c }"
+                @click="selectedCurrency = c"
+              >
+                {{ c }}
+              </button>
+            </div>
+          </div>
           <div class="form-group">
             <label for="amount">金額</label>
             <div class="amount-input">
-              <span class="currency-symbol">$</span>
+              <span class="currency-symbol">{{ selectedCurrency }}</span>
               <input 
                 id="amount"
                 v-model="expenseAmount" 
@@ -57,9 +70,8 @@
                 placeholder="輸入金額" 
               />
             </div>
-          </div>
+          </div> 
         </div>
-        
         <div class="form-group">
           <label for="payer">付款人</label>
           <select id="payer" v-model="expensePayer">
@@ -101,7 +113,8 @@
             <thead>
               <tr>
                 <th>品項</th>
-                <th class="amount-column">金額</th>
+                <th class="amount-column">原金額</th>
+                <th class="amount-column">轉換後金額</th>
                 <th>付款人</th>
                 <th>參與者</th>
               </tr>
@@ -109,6 +122,7 @@
             <tbody>
               <tr v-for="(expense, index) in expenses" :key="index">
                 <td>{{ expense.itemname }}</td>
+                <td class="amount"> {{ expense.originAmount }}</td>
                 <td class="amount">$ {{ expense.amount }}</td>
                 <td>{{ expense.payer }}</td>
                 <td>
@@ -145,7 +159,9 @@ export default {
       expensePayer: "",
       selectedParticipants: [],
       expenses: [],
-      participants: ['黃','陳','楊'], 
+      participants: ['黃','陳','楊'],
+      selectedCurrency: '$',
+      convertedAmount:'',
     };
   },
   mounted() {
@@ -223,11 +239,20 @@ export default {
         return;
       }
 
+
+      //匯率轉換
+      if(this.selectedCurrency=='$'){
+        this.convertedAmount=this.expenseAmount;
+      }else{
+        this.convertedAmount=this.expenseAmount*0.625;
+      }
+
       const newExpense = {
         itemname: this.itemname,
-        amount: this.expenseAmount,
+        amount: parseFloat(this.convertedAmount.toFixed(2)),
         payer: this.expensePayer,
         participants: [...this.selectedParticipants],
+        originAmount:this.selectedCurrency+this.expenseAmount,
       };
 
       this.expenses.push(newExpense);
@@ -258,9 +283,9 @@ export default {
           expense.participants.join(", "),
           this.user.getBasicProfile().getName(),
           new Date().toLocaleString(),
+          expense.originAmount,
         ],
       ];
-
       try {
         await gapi.client.sheets.spreadsheets.values.append({
           spreadsheetId,
@@ -311,7 +336,7 @@ export default {
   padding-bottom: 10px;
 }
 
-/* Improved navigation */
+/* 導航樣式 */
 .nav-tabs {
   display: flex;
   background: white;
@@ -351,7 +376,7 @@ export default {
   background-color: #f8f9fa;
 }
 
-/* Sign in card */
+/* 登入卡片樣式 */
 .sign-in-card {
   display: flex;
   flex-direction: column;
@@ -395,7 +420,7 @@ export default {
   max-width: 280px;
 }
 
-/* Content area */
+/* 內容區域 */
 .content-area {
   display: flex;
   flex-direction: column;
@@ -420,10 +445,14 @@ export default {
   padding-bottom: 10px;
 }
 
-/* Form improvements */
+/* 表單優化 */
+.full-width {
+  grid-column: 1 / -1;
+}
+
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 2fr;
   gap: 15px;
 }
 
@@ -475,7 +504,7 @@ select:focus {
   background-color: white;
 }
 
-/* Improved participant selector */
+/* 參與者選擇器 */
 .participant-selector {
   display: flex;
   flex-wrap: wrap;
@@ -508,7 +537,7 @@ select:focus {
   font-weight: bold;
 }
 
-/* Button styles */
+/* 按鈕樣式 */
 .btn {
   padding: 12px 18px;
   border: none;
@@ -549,7 +578,7 @@ select:focus {
   margin-right: 5px;
 }
 
-/* Improved table styles */
+/* 表格樣式優化 */
 .table-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -607,6 +636,7 @@ select:focus {
   font-size: 0.85rem;
   display: inline-block;
 }
+
 .sign-out-bar {
   display: flex;
   justify-content: space-between;
@@ -630,8 +660,21 @@ select:focus {
   color: white;
 }
 
+.currency-buttons button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
 
-/* Responsive styles */
+.currency-buttons button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+/* 響應式樣式 */
 @media (max-width: 600px) {
   .container {
     padding: 10px;
@@ -684,7 +727,7 @@ select:focus {
   }
 }
 
-/* Fix for Safari */
+/* Safari 瀏覽器修復 */
 @supports (-webkit-overflow-scrolling: touch) {
   input {
     font-size: 16px;

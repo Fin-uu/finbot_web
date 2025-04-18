@@ -21,7 +21,7 @@
             <thead>
               <tr>
                 <th>品項</th>
-                <th class="amount-column">金額</th>
+                <th class="amount-column">轉換後金額</th>
                 <th>付款人</th>
                 <th>參與者</th>
               </tr>
@@ -45,11 +45,6 @@
               </tr>
             </tbody>
           </table>
-        </div>
-        <div class="card-actions">
-          <button class="btn btn-danger" @click="clearExpense">
-            <i class="icon">×</i> 清空紀錄
-          </button>
         </div>
       </div>
 
@@ -136,7 +131,7 @@ const loadExpenses = async () => {
         item: row[0] || '', // 品項
         amount: parseFloat(row[1]) || 0, // 金額
         payer: row[2] || '', // 付款人
-        participants: row[3] ? row[3].split(',').map(name => name.trim()) : [] // 參與者（以逗號分隔）
+        participants: row[3] ? row[3].split(',').map(name => name.trim()) : [], // 參與者（以逗號分隔）
       }))
     } else {
       expenses.value = []
@@ -146,13 +141,6 @@ const loadExpenses = async () => {
   }
 }
 
-const clearExpense = () => {
-  if (confirm('確定要清空所有紀錄嗎？')) {
-    expenses.value = []
-    paymentInstructions.value = []
-    settlement.value = []
-  }
-}
 
 const calculateSettlement = () => {
   const balances = {}
