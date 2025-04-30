@@ -13,10 +13,14 @@ import groupHome from '../components/group/groupHome.vue'
 import groupAccount from '../components/group/groupAccount.vue'
 import groupExpenseHistory from '../components/group/groupExpenseHistory.vue'
 import groupParticipants from '../components/group/groupParticipants.vue'
-
+//xin
+import xinHome from '../components/xin/xinHome.vue'
+import xinAccount from '../components/xin/xinAccount.vue'
+import xinExpenseHistory from '../components/xin/xinExpenseHistory.vue'
 // 設定路由
 const routes = [
   { path: '/', component: HelloWorld },
+  { path: '/personalHome', component: personalHome },
   { path: '/participants', component: Participants },
   { path: '/accounting', component: Accounting },
   { path: '/expenseHistory', component: ExpenseHistory },
@@ -24,7 +28,10 @@ const routes = [
   { path: '/groupExpenseHistory', component: groupExpenseHistory },
   { path: '/groupParticipants', component: groupParticipants },
   { path: '/groupHome', component: groupHome },
-  { path: '/personalHome', component: personalHome },
+  { path: '/xinHome', component: xinHome },
+  { path: '/xinExpenseHistory', component: xinExpenseHistory },
+  { path: '/xinAccount', component: xinAccount },
+ 
 ]
 
 const router = createRouter({

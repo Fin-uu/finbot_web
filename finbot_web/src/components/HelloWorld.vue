@@ -26,7 +26,10 @@
           <i class="icon">📊</i> 個人使用
         </router-link>
         <button class="btn btn-bluegrey" @click="handleGroupAccess">
-          <i class="icon">👫</i> 與朋友共用
+          <i class="icon">👫</i> sasa
+        </button>
+        <button class="btn btn-rose" @click="handlexinAccess">
+          <i class="icon">👫</i>xin 
         </button>
       </div>
     </div>
@@ -44,6 +47,15 @@ function handleGroupAccess() {
   const password = prompt("請輸入通關密語：")
   if (password?.trim().toLowerCase() === "sasa") {
     router.push("/groupHome")
+  } else {
+    alert("你不能用這個功能喔!")
+    router.push("/")
+  }
+}
+function handlexinAccess() {
+  const password = prompt("請輸入通關密語：")
+  if (password?.trim().toLowerCase() === "0622") {
+    router.push("/xinHome")
   } else {
     alert("你不能用這個功能喔!")
     router.push("/")

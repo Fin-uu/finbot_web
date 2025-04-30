@@ -4,10 +4,10 @@
     
     <!-- Improved navigation menu -->
     <div class="nav-tabs">
-      <router-link to="/groupAccount" class="nav-tab active">
+      <router-link to="/xinAccount" class="nav-tab active">
         <i class="icon">📝</i> <span>記帳</span>
       </router-link>
-      <router-link to="/groupExpenseHistory" class="nav-tab">
+      <router-link to="/xinExpenseHistory" class="nav-tab">
         <i class="icon">📊</i> <span>紀錄</span>
       </router-link>
     </div>
@@ -46,7 +46,7 @@
               placeholder="例如: 晚餐、計程車" 
             />
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="amount">幣別</label>
             <div class="currency-buttons">
               <button 
@@ -58,7 +58,7 @@
                 {{ c }}
               </button>
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label for="amount">金額</label>
             <div class="amount-input">
@@ -113,8 +113,8 @@
             <thead>
               <tr>
                 <th>品項</th>
-                <th class="amount-column">原金額</th>
-                <th class="amount-column">轉換後金額</th>
+                <th class="amount-column">金額</th>
+                <!-- <th class="amount-column">轉換後金額</th> -->
                 <th>付款人</th>
                 <th>參與者</th>
               </tr>
@@ -123,7 +123,7 @@
               <tr v-for="(expense, index) in expenses" :key="index">
                 <td>{{ expense.itemname }}</td>
                 <td class="amount"> {{ expense.originAmount }}</td>
-                <td class="amount">$ {{ expense.amount }}</td>
+                <!-- <td class="amount">$ {{ expense.amount }}</td> -->
                 <td>{{ expense.payer }}</td>
                 <td>
                   <div class="participant-tags">
@@ -159,9 +159,9 @@ export default {
       expensePayer: "",
       selectedParticipants: [],
       expenses: [],
-      participants: ['黃','陳','楊'],
+      participants: ['魚','奇葦'],
       selectedCurrency: '$',
-      convertedAmount:'',
+//      convertedAmount:'',
     };
   },
   mounted() {
@@ -273,7 +273,7 @@ export default {
 
     async appendToSheet(expense) {
       const spreadsheetId = import.meta.env.VITE_SPREADSHEET_ID;
-      const sheetName = import.meta.env.VITE_SHEET_NAME_sasa; 
+      const sheetName = import.meta.env.VITE_SHEET_NAME_xin; 
       const range = `${sheetName}!A:F`;
       const values = [
         [
@@ -452,7 +452,7 @@ export default {
 
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 2fr;
   gap: 15px;
 }
 
