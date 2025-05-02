@@ -109,7 +109,7 @@ import { ref, onMounted, watch } from 'vue'
 
 // Google Sheets 設定
 const SPREADSHEET_ID = import.meta.env.VITE_SPREADSHEET_ID;
-const sheetName = import.meta.env.VITE_SHEET_NAME; 
+const sheetName = import.meta.env.VITE_SHEET_NAME_sasa; 
 const RANGE = `${sheetName}!A2:D`;
 
 
